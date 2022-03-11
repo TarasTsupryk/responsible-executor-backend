@@ -1,11 +1,9 @@
-import express from "express";
 import dotenv from "dotenv";
+import app from "./components/app.js";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
-
-const app = express();
 
 async function start() {
   try {
