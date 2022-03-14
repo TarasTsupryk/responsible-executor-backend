@@ -2,12 +2,16 @@ import databasePool from "../../shared/database.js";
 
 class UserService {
   async getAll() {
-    try {
-      const query = "SELECT * FROM users";
-      const users = await databasePool.query(query);
-      return users[0];
-    } catch (e) {
-      console.log(e);
+    const select_users_query = "SELECT * FROM users";
+    const users = await databasePool.query(select_users_query);
+    return users[0];
+  }
+
+  async activateOne(activation_link) {
+    const activate_user_query = `UPDATE users SET is_active = 1 WHERE activation_link = "${activation_link}"`;
+    await databasePool.query(activate_user_query)
+    return {
+      text: "SUCCESS"
     }
   }
 }
