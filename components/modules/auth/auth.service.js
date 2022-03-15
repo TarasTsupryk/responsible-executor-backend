@@ -1,12 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import dotenv from "dotenv";
-import databasePool from "../../shared/database.js";
+import UserService from "../user/user.service.js";
 import EmailService from "../email/email.service.js";
 import { valideteEmail, validetePassword } from "./auth.utils.js";
 import { SERVER_URL } from "../../shared/env.js";
+import TokenService from "../token/token.service.js";
+import UserDto from "../user/user.dto.js";
 
 dotenv.config();
-
 class AuthService {
   async registration(reqBody) {
     const { email, password, firstName, lastName } = reqBody;
@@ -16,18 +17,29 @@ class AuthService {
     await valideteEmail(email);
     validetePassword(password);
 
-    const createUserSQL = `INSERT INTO users
-       (user_id, email, password, first_name, last_name, registration_date, activation_link)
-      VALUES
-       (user_id, "${email}", "${password}", "${firstName}", "${lastName}", NOW(), "${ACTIVATION_CODE}")`;
-
-    await databasePool.query(createUserSQL);
+    await UserService.create(
+      email,
+      password,
+      firstName,
+      lastName,
+      ACTIVATION_CODE
+    );
 
     await EmailService.sendActivationMail(
       email,
       activationLink,
       `${firstName} ${lastName}`
     );
+
+    const user = await UserService.findByEmail(email);
+    const userDto = new UserDto(user);
+    const tokens = TokenService.genetateTokens({ ...userDto });
+    await TokenService.saveToken(userDto.id, tokens.refreshToken);
+
+    return {
+      ...tokens,
+      user: userDto,
+    };
   }
 }
 
