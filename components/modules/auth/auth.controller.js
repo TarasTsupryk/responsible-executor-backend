@@ -2,7 +2,7 @@ import AuthService from "./auth.service.js";
 import Response from "../../shared/response.js";
 
 class AuthController {
-  async registration(req, res) {
+  async registration(req, res, next) {
     try {
       const userData = await AuthService.registration(req.body);
       res.cookie("refreshToken", userData.refreshToken, {
@@ -11,7 +11,7 @@ class AuthController {
       });
       res.status(200).json(userData);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      next(error);
     }
   }
 }
