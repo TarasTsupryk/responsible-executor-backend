@@ -1,12 +1,11 @@
 import AuthService from "./auth.service.js";
-import Response from "../../shared/response.js";
-
+import { DAY } from "../../shared/utils/time.js";
 class AuthController {
   async registration(req, res, next) {
     try {
       const userData = await AuthService.registration(req.body);
       res.cookie("refreshToken", userData.refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
+        maxAge: 30 * DAY,
         httpOnly: true,
       });
       res.status(200).json(userData);

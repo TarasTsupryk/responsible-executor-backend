@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import UserService from "../user/user.service.js";
 import EmailService from "../email/email.service.js";
 import { valideteEmail, validetePassword } from "./auth.utils.js";
-import { SERVER_URL } from "../../shared/env.js";
+import { SERVER_URL } from "../../shared/utils/env.js";
 import TokenService from "../token/token.service.js";
 import UserDto from "../user/user.dto.js";
 
