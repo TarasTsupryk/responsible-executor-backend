@@ -13,6 +13,19 @@ class AuthController {
       next(error);
     }
   }
+
+  async login(req, res, next) {
+    try {
+      const userData = await AuthService.login(req.body);
+      res.cookie("refreshToken", userData.refreshToken, {
+        maxAge: 30 * DAY,
+        httpOnly: true,
+      });
+      res.status(200).json(userData);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new AuthController();

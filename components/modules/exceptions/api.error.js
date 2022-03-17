@@ -8,6 +8,8 @@ export default class ApiError extends Error {
     MISSING_PASSWORD: "MISSING_PASSWORD",
     SHORT_PASSWORD: "SHORT_PASSWORD",
     TOO_LONG_PASSWORD: "TOO_LONG_PASSWORD",
+    USER_DOES_NOT_EXIST: "USER_DOES_NOT_EXIST",
+    WRONG_PASSWORD: "WRONG_PASSWORD",
   };
 
   constructor(status, message, errors = []) {

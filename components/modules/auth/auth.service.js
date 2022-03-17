@@ -6,6 +6,8 @@ import { valideteEmail, validetePassword } from "./auth.utils.js";
 import { SERVER_URL } from "../../shared/utils/env.js";
 import TokenService from "../token/token.service.js";
 import UserDto from "../user/user.dto.js";
+import databasePool from "../../shared/database.js";
+import ApiError from "../exceptions/api.error.js";
 
 dotenv.config();
 class AuthService {
@@ -36,6 +38,28 @@ class AuthService {
     const tokens = TokenService.genetateTokens({ ...userDto });
     await TokenService.saveToken(userDto.id, tokens.refreshToken);
 
+    return {
+      ...tokens,
+      user: userDto,
+    };
+  }
+
+  async login(resBody) {
+    const { email, password } = resBody;
+    const query = `SELECT * FROM users WHERE email = "${email}"`;
+    const response = await databasePool.query(query);
+    const userData = response[0][0];
+    if (!userData) {
+      throw ApiError.badRequest(ApiError.errorMessages.USER_DOES_NOT_EXIST);
+    }
+
+    if (userData.password !== password) {
+      throw ApiError.badRequest(ApiError.errorMessages.WRONG_PASSWORD);
+    }
+
+    const userDto = new UserDto(userData);
+    const tokens = TokenService.genetateTokens({ ...userDto });
+    await TokenService.saveToken(userDto.id, tokens.refreshToken);
     return {
       ...tokens,
       user: userDto,

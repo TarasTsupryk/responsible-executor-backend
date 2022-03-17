@@ -23,7 +23,7 @@ class TokenService {
     const findUserByIdQuery = `SELECT * FROM tokens WHERE user_id = ${userId}`;
     const tokenData = await databasePool.query(findUserByIdQuery);
     if (tokenData[0][0]) {
-      const updateTokenQuery = `UPDATE tokens SET token = ${refreshToken} WHERE user_id = ${userId}`;
+      const updateTokenQuery = `UPDATE tokens SET token = "${refreshToken}" WHERE user_id = ${userId}`;
       const result = await databasePool.query(updateTokenQuery);
       return result;
     }
