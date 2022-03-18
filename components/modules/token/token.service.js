@@ -32,6 +32,12 @@ class TokenService {
     const result = await databasePool.query(createTokenQuery);
     return result;
   }
+
+  async removeToken(refreshToken) {
+    const removeTokenQuery = `DELETE FROM tokens WHERE token = "${refreshToken}"`;
+    await databasePool.query(removeTokenQuery)
+    return refreshToken
+  }
 }
 
 export default new TokenService();
