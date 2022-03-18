@@ -59,7 +59,7 @@ class AuthService {
 
     const userDto = new UserDto(userData);
     const tokens = TokenService.genetateTokens({ ...userDto });
-    await TokenService.saveToken(userDto.id, tokens.refreshToken);
+    await TokenService.saveToken(userDto.user_id, tokens.refreshToken);
     return {
       ...tokens,
       user: userDto,
@@ -69,6 +69,27 @@ class AuthService {
   async logout(refreshToken) {
     const token = await TokenService.removeToken(refreshToken);
     return token;
+  }
+
+  async refresh(refreshToken) {
+    if (!refreshToken) {
+      throw ApiError.unauthorizedUser();
+    }
+
+    const userData = TokenService.validateRefreshToken(refreshToken);
+    const tokenFromDB = await TokenService.findByToken(refreshToken);
+
+    if (!userData || !tokenFromDB) {
+      throw ApiError.unauthorizedUser();
+    }
+
+    const userDto = new UserDto(userData);
+    const tokens = TokenService.genetateTokens({ ...userDto });
+    await TokenService.saveToken(userDto.user_id, tokens.refreshToken);
+    return {
+      ...tokens,
+      user: userDto,
+    };
   }
 }
 

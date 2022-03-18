@@ -1,10 +1,10 @@
 class UserDto {
-  id;
+  user_id;
   email;
   is_active;
 
   constructor(user) {
-    this.id = user.user_id;
+    this.user_id = user.user_id;
     this.email = user.email;
     this.is_active = user.is_active;
   }

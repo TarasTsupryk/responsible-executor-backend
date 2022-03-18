@@ -19,6 +19,24 @@ class TokenService {
     };
   }
 
+  validateAccessToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+      return userData;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  validateRefreshToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+      return userData;
+    } catch (error) {
+      return null;
+    }
+  }
+
   async saveToken(userId, refreshToken) {
     const findUserByIdQuery = `SELECT * FROM tokens WHERE user_id = ${userId}`;
     const tokenData = await databasePool.query(findUserByIdQuery);
@@ -35,8 +53,14 @@ class TokenService {
 
   async removeToken(refreshToken) {
     const removeTokenQuery = `DELETE FROM tokens WHERE token = "${refreshToken}"`;
-    await databasePool.query(removeTokenQuery)
-    return refreshToken
+    await databasePool.query(removeTokenQuery);
+    return refreshToken;
+  }
+
+  async findByToken(token) {
+    const findByTokenQuery = `SELECT * FROM tokens WHERE token = "${token}"`;
+    const responseFromDB = await databasePool.query(findByTokenQuery);
+    return responseFromDB[0][0]?.token;
   }
 }
 
