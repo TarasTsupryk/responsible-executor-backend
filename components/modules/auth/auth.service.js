@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import dotenv from "dotenv";
 import UserService from "../user/user.service.js";
 import EmailService from "../email/email.service.js";
-import { valideteEmail, validetePassword } from "./auth.utils.js";
+import Validator from "./auth.utils.js";
 import { SERVER_URL } from "../../shared/utils/env.js";
 import TokenService from "../token/token.service.js";
 import UserDto from "../user/user.dto.js";
@@ -16,8 +16,7 @@ class AuthService {
     const ACTIVATION_CODE = uuidv4();
     const activationLink = `${SERVER_URL}/activate-account/${ACTIVATION_CODE}`;
 
-    await valideteEmail(email);
-    validetePassword(password);
+    await Validator.validateUserData(firstName, lastName, email, password);
 
     await UserService.create(
       email,
