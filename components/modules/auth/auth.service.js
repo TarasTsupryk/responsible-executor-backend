@@ -36,7 +36,7 @@ class AuthService {
     const user = await UserService.findByEmail(email);
     const userDto = new UserDto(user);
     const tokens = TokenService.genetateTokens({ ...userDto });
-    await TokenService.saveToken(userDto.id, tokens.refreshToken);
+    await TokenService.saveToken(userDto.user_id, tokens.refreshToken);
 
     return {
       ...tokens,
