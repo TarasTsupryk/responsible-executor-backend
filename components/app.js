@@ -3,14 +3,16 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import UserRouter from "./modules/user/user.router.js";
 import AuthRouter from "./modules/auth/auth.router.js";
-import apiErrorMiddleware from "./modules/exceptions/api.error.middleware.js";
+import apiErrorMiddleware from "./modules/middlewares/error.middleware.js";
+import headersMiddleware from "./modules/middlewares/headers.middleware.js";
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(headersMiddleware);
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:3000",
   })
 );
 
