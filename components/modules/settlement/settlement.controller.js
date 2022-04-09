@@ -9,6 +9,16 @@ class SettlementController {
       next(error);
     }
   }
+
+  async getSettlements(req, res, next) {
+    try {
+      const { region } = req.body;
+      const response = await SettlementService.getSettlements(region);
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new SettlementController();
