@@ -7,7 +7,7 @@ export default class Validator {
       throw ApiError.badRequest(ApiError.errorMessages.INVALID_EMAIL);
     }
 
-    const queryString = `SELECT * FROM users WHERE email="${email}"`;
+    const queryString = `SELECT * FROM user WHERE email="${email}"`;
     const candidate = await databasePool.query(queryString);
 
     if (candidate[0].length > 0) {
