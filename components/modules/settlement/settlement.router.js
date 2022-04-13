@@ -4,6 +4,6 @@ import SettlementController from "./settlement.controller.js";
 const SettlementRouter = new Router();
 
 SettlementRouter.get("/regions", SettlementController.getRegions);
-SettlementRouter.get("/settlements", SettlementController.getSettlements);
+SettlementRouter.post("/settlements", SettlementController.getSettlements);
 
 export default SettlementRouter;
