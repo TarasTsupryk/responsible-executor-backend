@@ -29,6 +29,12 @@ class UserService {
     const data = await databasePool.query(query);
     return data[0][0];
   }
+
+  async checkEmail(email) {
+    const query = `SELECT * FROM user WHERE email = "${email}"`;
+    const data = await databasePool.query(query);
+    return { value: !!data[0][0] };
+  }
 }
 
 export default new UserService();

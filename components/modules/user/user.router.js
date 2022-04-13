@@ -6,5 +6,6 @@ const UserRouter = new Router();
 
 UserRouter.get("/users", authMiddleware, UserController.getAll);
 UserRouter.get("/activate-account/:activate_code", UserController.activateOne);
+UserRouter.post("/checkemail", UserController.checkEmail);
 
 export default UserRouter;

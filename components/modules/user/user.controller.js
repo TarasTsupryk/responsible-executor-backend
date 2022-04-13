@@ -19,6 +19,16 @@ class UserController {
       res.status(500).json(e.message);
     }
   }
+
+  async checkEmail(req, res, next) {
+    try {
+      const { email } = req.body;
+      const response = await UserService.checkEmail(email);
+      res.status(200).json(response);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export default new UserController();
