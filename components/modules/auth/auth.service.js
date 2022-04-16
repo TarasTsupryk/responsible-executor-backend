@@ -38,19 +38,8 @@ class AuthService {
     };
   }
 
-  async login(resBody) {
-    const { email, password } = resBody;
-    const query = `SELECT * FROM user WHERE email = "${email}"`;
-    const response = await databasePool.query(query);
-    const userData = response[0][0];
-    if (!userData) {
-      throw ApiError.badRequest(ApiError.errorMessages.USER_DOES_NOT_EXIST);
-    }
-
-    if (userData.password !== password) {
-      throw ApiError.badRequest(ApiError.errorMessages.WRONG_PASSWORD);
-    }
-
+  async login(user) {
+    const userData = await Validator.validateLogin(user);
     const userDto = new UserDto(userData);
     const tokens = TokenService.genetateTokens({ ...userDto });
     await TokenService.saveToken(userDto.user_id, tokens.refreshToken);

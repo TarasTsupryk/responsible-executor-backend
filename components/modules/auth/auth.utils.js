@@ -71,4 +71,22 @@ export default class Validator {
     if (errors.length > 0)
       throw ApiError.badRequest("NOT_CORRECT_USER_DATA", errors);
   }
+
+  static async validateLogin(user) {
+    const errors = [];
+    const { email, password } = user;
+    const query = `SELECT * FROM user WHERE email = "${email}"`;
+    const response = await databasePool.query(query);
+    const userData = response[0][0];
+
+    if (!userData)
+      errors.push(ApiError.auth_errors.email_errors.USER_DOES_NOT_EXIST);
+    if (userData?.password !== password)
+      errors.push(ApiError.auth_errors.password_errors.WRONG_PASSWORD);
+
+    if (errors.length > 0)
+      throw ApiError.badRequest("NOT_CORRECT_USER_DATA", errors);
+
+    return userData;
+  }
 }
