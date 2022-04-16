@@ -1,22 +1,22 @@
 import UserService from "./user.service.js";
 
 class UserController {
-  async getAll(_, res) {
+  async getAll(_, res, next) {
     try {
       const response = await UserService.getAll();
       res.status(200).json(response);
     } catch (e) {
-      res.status(500).json(e.message);
+      next(e);
     }
   }
 
-  async activateOne(req, res) {
+  async activateOne(req, res, next) {
     try {
       const { activate_code } = req.params;
       const response = await UserService.activateOne(activate_code);
       res.status(200).json(response);
     } catch (error) {
-      res.status(500).json(e.message);
+      next(error);
     }
   }
 

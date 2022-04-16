@@ -10,21 +10,16 @@ import databasePool from "../../shared/database.js";
 import ApiError from "../exceptions/api.error.js";
 
 dotenv.config();
+
 class AuthService {
-  async registration(reqBody) {
-    const { email, password, firstName, lastName } = reqBody;
+  async registration(user) {
+    const { email, firstName, lastName } = user;
     const ACTIVATION_CODE = uuidv4();
     const activationLink = `${SERVER_URL}/activate-account/${ACTIVATION_CODE}`;
 
-    await Validator.validateUserData(firstName, lastName, email, password);
+    await Validator.validateUserData(user);
 
-    await UserService.create(
-      email,
-      password,
-      firstName,
-      lastName,
-      ACTIVATION_CODE
-    );
+    await UserService.create(user, ACTIVATION_CODE);
 
     await EmailService.sendActivationMail(
       email,
@@ -32,8 +27,8 @@ class AuthService {
       `${firstName} ${lastName}`
     );
 
-    const user = await UserService.findByEmail(email);
-    const userDto = new UserDto(user);
+    const userFromDb = await UserService.findByEmail(email);
+    const userDto = new UserDto(userFromDb);
     const tokens = TokenService.genetateTokens({ ...userDto });
     await TokenService.saveToken(userDto.user_id, tokens.refreshToken);
 
