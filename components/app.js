@@ -7,6 +7,7 @@ import SettlementRouter from "./modules/settlement/settlement.router.js";
 import apiErrorMiddleware from "./modules/middlewares/error.middleware.js";
 import headersMiddleware from "./modules/middlewares/headers.middleware.js";
 import StatisticsRouter from "./modules/statistics/statistics.router.js";
+import TenderRouter from "./modules/tender/tender.router.js";
 
 const app = express();
 app.use(express.json());
@@ -25,6 +26,7 @@ app.use(AUTH_URL, AuthRouter);
 app.use(API_URL, UserRouter);
 app.use(API_URL, SettlementRouter);
 app.use(API_URL, StatisticsRouter);
+app.use(API_URL, TenderRouter);
 app.use(apiErrorMiddleware);
 
 export default app;
