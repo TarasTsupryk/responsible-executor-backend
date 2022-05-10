@@ -11,9 +11,11 @@ class TenderController {
     }
   }
 
-  async getAll(_, res, next) {
+  async getAll(req, res, next) {
     try {
-      const tenders = await TenderService.getAll();
+      const { query } = req;
+      const { numberOfTenders, tenders } = await TenderService.getAll(query);
+      res.set("numberOfTenders", numberOfTenders);
       res.status(200).json(tenders);
     } catch (error) {
       next(error);
