@@ -9,10 +9,20 @@ class TenderService {
     return responseFromDB[0][0];
   }
 
-  async getAll() {
-    const query = `SELECT * FROM tender`;
-    const responseFromDB = await databasePool.query(query);
-    return responseFromDB[0];
+  async getAll(queryParams) {
+    const { limit, page } = queryParams;
+    const pageQuery =
+      limit && page ? ` LIMIT ${(page - 1) * limit}, ${limit}` : "";
+    const query = `SELECT * FROM tender`.concat(pageQuery);
+    const tenders = await databasePool.query(query);
+    const numberOfTendersQuery =
+      "SELECT COUNT(*) as countOfTenders FROM tender";
+    const numberOfTenders = await databasePool.query(numberOfTendersQuery);
+
+    return {
+      numberOfTenders: numberOfTenders[0][0].countOfTenders,
+      tenders: tenders[0],
+    };
   }
 
   async create(tender, refreshToken) {
