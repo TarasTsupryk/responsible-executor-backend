@@ -10,6 +10,7 @@ import StatisticsRouter from "./modules/statistics/statistics.router.js";
 import TenderRouter from "./modules/tender/tender.router.js";
 import CategoryRouter from "./modules/category/category.router.js";
 import ComplaintsRouter from "./modules/complaints/complaints.router.js";
+import SpecificationRouter from "./modules/specification/specification.router.js";
 
 const app = express();
 app.use(express.json());
@@ -31,6 +32,7 @@ app.use(API_URL, StatisticsRouter);
 app.use(API_URL, TenderRouter);
 app.use(API_URL, CategoryRouter);
 app.use(API_URL, ComplaintsRouter);
+app.use(API_URL, SpecificationRouter);
 app.use(apiErrorMiddleware);
 
 export default app;
