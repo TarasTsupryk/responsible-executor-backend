@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+
 import UserRouter from "./modules/user/user.router.js";
 import AuthRouter from "./modules/auth/auth.router.js";
 import SettlementRouter from "./modules/settlement/settlement.router.js";
@@ -12,13 +14,17 @@ import CategoryRouter from "./modules/category/category.router.js";
 import ComplaintsRouter from "./modules/complaints/complaints.router.js";
 import SpecificationRouter from "./modules/specification/specification.router.js";
 
+dotenv.config();
+
+const ORIGINS = JSON.parse(process.env.ORIGINS);
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(headersMiddleware);
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://192.168.0.109:3000"],
+    origin: ORIGINS,
   })
 );
 
