@@ -6,7 +6,6 @@ import Validator from "./auth.utils.js";
 import { SERVER_URL } from "../../shared/utils/env.js";
 import TokenService from "../token/token.service.js";
 import UserDto from "../user/user.dto.js";
-import databasePool from "../../shared/database.js";
 import ApiError from "../exceptions/api.error.js";
 
 dotenv.config();
