@@ -10,6 +10,16 @@ class UserController {
     }
   }
 
+  async getOne(req, res, next) {
+    try {
+      const accessToken = req.headers.authorization;
+      const response = await UserService.getOne(accessToken);
+      res.status(200).json(response);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async activateOne(req, res, next) {
     try {
       const { activate_code } = req.params;

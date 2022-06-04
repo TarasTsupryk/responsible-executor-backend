@@ -8,12 +8,11 @@ export default function authMiddleware(req, _, next) {
       throw ApiError.unauthorizedUser();
     }
 
-    const token = authorizationHeader.split(" ")[1];
-    if (!token) {
+    if (!authorizationHeader) {
       throw ApiError.unauthorizedUser();
     }
 
-    const userData = TokenService.validateAccessToken(token);
+    const userData = TokenService.validateAccessToken(authorizationHeader);
     if (!userData) {
       throw ApiError.unauthorizedUser();
     }
