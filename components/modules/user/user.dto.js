@@ -10,6 +10,7 @@ class UserDto {
   }
 
   static fullData(user) {
+    if (!user) return null;
     const {
       email,
       first_name,

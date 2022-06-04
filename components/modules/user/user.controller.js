@@ -10,6 +10,16 @@ class UserController {
     }
   }
 
+  async getById(req, res, next) {
+    try {
+      const { user_id } = req.params;
+      const response = await UserService.getById(user_id);
+      res.status(200).json(response);
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async getOne(req, res, next) {
     try {
       const accessToken = req.headers.authorization;
