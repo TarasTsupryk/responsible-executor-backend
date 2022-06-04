@@ -10,10 +10,11 @@ class TenderService {
   }
 
   async getAll(queryParams) {
-    const { limit, page } = queryParams;
+    const { limit, page, user_id } = queryParams;
+    const forUser = user_id ? ` WHERE owner_id = ${user_id}` : "";
     const pageQuery =
       limit && page ? ` LIMIT ${(page - 1) * limit}, ${limit}` : "";
-    const query = `SELECT * FROM tender`.concat(pageQuery);
+    const query = `SELECT * FROM tender`.concat(forUser).concat(pageQuery);
     const tenders = await databasePool.query(query);
     const numberOfTendersQuery =
       "SELECT COUNT(*) as countOfTenders FROM tender";
