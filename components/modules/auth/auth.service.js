@@ -6,7 +6,6 @@ import Validator from "./auth.utils.js";
 import { SERVER_URL } from "../../shared/utils/env.js";
 import TokenService from "../token/token.service.js";
 import UserDto from "../user/user.dto.js";
-import databasePool from "../../shared/database.js";
 import ApiError from "../exceptions/api.error.js";
 
 dotenv.config();
@@ -28,7 +27,7 @@ class AuthService {
     );
 
     const userFromDb = await UserService.findByEmail(email);
-    const userDto = new UserDto(userFromDb);
+    const userDto = UserDto.token(userFromDb);
     const tokens = TokenService.genetateTokens({ ...userDto });
     await TokenService.saveToken(userDto.user_id, tokens.refreshToken);
 
@@ -40,7 +39,7 @@ class AuthService {
 
   async login(user) {
     const userData = await Validator.validateLogin(user);
-    const userDto = new UserDto(userData);
+    const userDto = UserDto.token(userData);
     const tokens = TokenService.genetateTokens({ ...userDto });
     await TokenService.saveToken(userDto.user_id, tokens.refreshToken);
     return {
@@ -66,7 +65,7 @@ class AuthService {
       throw ApiError.unauthorizedUser();
     }
 
-    const userDto = new UserDto(userData);
+    const userDto = UserDto.token(userData);
     const tokens = TokenService.genetateTokens({ ...userDto });
     await TokenService.saveToken(userDto.user_id, tokens.refreshToken);
     return {
