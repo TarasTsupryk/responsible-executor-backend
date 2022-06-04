@@ -21,6 +21,7 @@ class UserDto {
       registration_date,
       type,
       user_id,
+      logo,
     } = user;
 
     return {
@@ -33,6 +34,7 @@ class UserDto {
       registration_date,
       type,
       user_id,
+      logo,
     };
   }
 }
