@@ -13,6 +13,7 @@ import TenderRouter from "./modules/tender/tender.router.js";
 import CategoryRouter from "./modules/category/category.router.js";
 import ComplaintsRouter from "./modules/complaints/complaints.router.js";
 import SpecificationRouter from "./modules/specification/specification.router.js";
+import CompanyRouter from "./modules/company/company.router.js"
 
 dotenv.config();
 
@@ -39,6 +40,7 @@ app.use(API_URL, TenderRouter);
 app.use(API_URL, CategoryRouter);
 app.use(API_URL, ComplaintsRouter);
 app.use(API_URL, SpecificationRouter);
+app.use(API_URL, CompanyRouter);
 app.use(apiErrorMiddleware);
 
 export default app;
