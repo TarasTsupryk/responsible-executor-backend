@@ -1,14 +1,41 @@
 class UserDto {
-  user_id;
-  email;
-  is_active;
-  type;
+  static token(user) {
+    const { user_id, email, is_active, type } = user;
+    return {
+      user_id,
+      email,
+      is_active,
+      type,
+    };
+  }
 
-  constructor(user) {
-    this.user_id = user.user_id;
-    this.email = user.email;
-    this.is_active = user.is_active;
-    this.type = user.type;
+  static fullData(user) {
+    if (!user) return null;
+    const {
+      email,
+      first_name,
+      last_name,
+      is_active,
+      phone_number,
+      position,
+      registration_date,
+      type,
+      user_id,
+      logo,
+    } = user;
+
+    return {
+      email,
+      first_name,
+      last_name,
+      is_active,
+      phone_number,
+      position,
+      registration_date,
+      type,
+      user_id,
+      logo,
+    };
   }
 }
 

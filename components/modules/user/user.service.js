@@ -1,10 +1,26 @@
 import databasePool from "../../shared/database.js";
+import TokenService from "../token/token.service.js";
+import UserDto from "./user.dto.js";
 
 class UserService {
   async getAll() {
     const select_users_query = "SELECT * FROM user";
     const users = await databasePool.query(select_users_query);
     return users[0];
+  }
+
+  async getOne(accessToken) {
+    const userData = TokenService.validateAccessToken(accessToken);
+    const { user_id } = userData;
+    const select_users_query = `SELECT * FROM user WHERE user_id = ${user_id}`;
+    const users = await databasePool.query(select_users_query);
+    return users[0][0];
+  }
+
+  async getById(user_id) {
+    const select_users_query = `SELECT * FROM user WHERE user_id = ${user_id}`;
+    const users = await databasePool.query(select_users_query);
+    return UserDto.fullData(users[0][0]);
   }
 
   async activateOne(activation_link) {

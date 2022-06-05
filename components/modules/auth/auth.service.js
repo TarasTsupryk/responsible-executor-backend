@@ -27,7 +27,7 @@ class AuthService {
     );
 
     const userFromDb = await UserService.findByEmail(email);
-    const userDto = new UserDto(userFromDb);
+    const userDto = UserDto.token(userFromDb);
     const tokens = TokenService.genetateTokens({ ...userDto });
     await TokenService.saveToken(userDto.user_id, tokens.refreshToken);
 
@@ -39,7 +39,7 @@ class AuthService {
 
   async login(user) {
     const userData = await Validator.validateLogin(user);
-    const userDto = new UserDto(userData);
+    const userDto = UserDto.token(userData);
     const tokens = TokenService.genetateTokens({ ...userDto });
     await TokenService.saveToken(userDto.user_id, tokens.refreshToken);
     return {
@@ -65,7 +65,7 @@ class AuthService {
       throw ApiError.unauthorizedUser();
     }
 
-    const userDto = new UserDto(userData);
+    const userDto = UserDto.token(userData);
     const tokens = TokenService.genetateTokens({ ...userDto });
     await TokenService.saveToken(userDto.user_id, tokens.refreshToken);
     return {

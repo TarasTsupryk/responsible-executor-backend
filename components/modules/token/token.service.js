@@ -19,9 +19,10 @@ class TokenService {
     };
   }
 
-  validateAccessToken(token) {
+  validateAccessToken(tokenHeader) {
     try {
-      const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+      const accessToken = tokenHeader.split(" ")[1];
+      const userData = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET);
       return userData;
     } catch (error) {
       return null;
